@@ -6,7 +6,7 @@ Every message goes through SupportService.handle(), so the UI gets the same logg
 circuit breakers and fallbacks as the tests and the notebook.
 """
 import os
-
+import service
 import streamlit as st
 
 from service import SupportService
