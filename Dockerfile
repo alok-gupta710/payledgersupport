@@ -25,7 +25,11 @@ COPY scenarios.py .
 COPY evaluation.py .
 COPY run_eval.py .
 COPY safety_review.py .
-
+COPY data/ ./data/
+COPY prompts/ ./prompts/
+COPY eval/ ./eval/
+COPY results/ ./results/
+COPY VERSION .
 
 # WHY EXPOSE 8501: tells Cloud Run which port to route traffic to
 EXPOSE 8501
