@@ -1,0 +1,74 @@
+[
+  {
+    "doc_id": "POL-FEES-001",
+    "title": "Fee Schedule",
+    "category": "fees",
+    "version": "2.1",
+    "effective_date": "2026-07-01",
+    "text": "Domestic ACH payouts cost USD 0.50 per payout. Same-day ACH payouts cost USD 2.00 per payout. International payouts (EUR, GBP and other non-USD currencies) cost a flat USD 5.00 per payout plus a 1.0% FX markup on the converted amount. Card payments cost 2.9% per transaction. Fee waivers and discounts are not offered through support. Pricing changes require a contract amendment through the customer's account manager."
+  },
+  {
+    "doc_id": "POL-SETTLE-002",
+    "title": "Settlement Timelines and SLAs",
+    "category": "settlement",
+    "version": "1.4",
+    "effective_date": "2026-05-15",
+    "text": "Standard ACH payments settle within 3 business days. Same-day ACH payments settle the same business day if submitted before the 14:00 ET cut-off, otherwise the next business day. International SWIFT payments settle within 5 business days. A payment still in 'processing' after its SLA must be escalated to the Payments Operations team with the payment ID."
+  },
+  {
+    "doc_id": "POL-REFUND-003",
+    "title": "Refunds and Duplicate Charges",
+    "category": "billing",
+    "version": "3.0",
+    "effective_date": "2026-09-01",
+    "text": "Duplicate charges are verified by the Billing team. Once verified, the duplicate amount is refunded to the original payment method within 5-7 business days. Support agents, including automated assistants, cannot issue refunds. Customers must never be asked to share full card numbers."
+  },
+  {
+    "doc_id": "POL-SEC-004",
+    "title": "Bank Account and Payout Destination Changes",
+    "category": "security",
+    "version": "1.2",
+    "effective_date": "2026-03-10",
+    "text": "Payout bank accounts can only be added or changed by an account admin in Settings > Payout Accounts, with two-factor authentication and micro-deposit verification. Support will never change bank details over chat, email or phone. Current payout accounts can be viewed by admins in Settings > Payout Accounts."
+  },
+  {
+    "doc_id": "POL-PRIV-005",
+    "title": "Customer Data Privacy",
+    "category": "privacy",
+    "version": "2.0",
+    "effective_date": "2026-01-01",
+    "text": "Each customer can only access data belonging to their own account (tenant). Support never discloses another customer's transactions, pricing, invoices or identity."
+  },
+  {
+    "doc_id": "POL-DISPUTE-006",
+    "title": "Disputes, Fraud and Account Security Incidents",
+    "category": "disputes",
+    "version": "1.1",
+    "effective_date": "2026-04-01",
+    "text": "Suspected fraud, unauthorized transactions, account takeover, chargebacks and legal or regulatory complaints are handled only by the Risk and Disputes team. These cases are acknowledged within 1 business day."
+  },
+  {
+    "doc_id": "KB-ERP-409",
+    "title": "ERP Sync Error ERP-409: Duplicate External ID",
+    "category": "erp",
+    "version": "1.0",
+    "effective_date": "2026-06-01",
+    "text": "ERP-409 means a record with the same external ID already exists in NetSuite or QuickBooks. Fix: 1) Open Integrations > Sync Log and find the failed record. 2) In your ERP, search for the external ID shown. 3) Delete or merge the duplicate record in the ERP. 4) Click 'Retry sync'. If the error persists after a retry, contact support with the sync log ID."
+  },
+  {
+    "doc_id": "KB-ERP-401",
+    "title": "ERP Sync Error ERP-401: Authorization Expired",
+    "category": "erp",
+    "version": "1.0",
+    "effective_date": "2026-06-01",
+    "text": "ERP-401 means the connection token to NetSuite or QuickBooks has expired. Fix: 1) Go to Integrations. 2) Click 'Reconnect' on the ERP card. 3) Sign in to the ERP as an admin and approve access. 4) Click 'Retry sync'."
+  },
+  {
+    "doc_id": "KB-PAYFAIL-007",
+    "title": "Failed Payments and Return Codes",
+    "category": "payments",
+    "version": "1.3",
+    "effective_date": "2026-08-01",
+    "text": "A failed payment shows a bank return code. R01 means insufficient funds in the funding account. R03 means the vendor's bank account could not be located. Fix R03 by confirming the vendor's bank details in Vendors > Bank Details, then resubmit the payment. Failed payments are not charged a fee."
+  }
+]

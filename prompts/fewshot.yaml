@@ -1,0 +1,81 @@
+# Few-shot examples used by v2_rules_fewshot and v4_full.
+# IDs and wording deliberately differ from eval/test_cases.yaml to limit test leakage.
+- name: negated_mention_is_not_a_request
+  user_turn: |
+    CUSTOMER MESSAGE:
+    Not trying to change our plan or anything, just tell me what you charge for card payments.
+
+    ACCOUNT LOOKUPS:
+    none (no payment, payout, invoice or error IDs in the message)
+  decision:
+    decision_notes: "Mentions a plan change but does not request it. One intent: card fee. Answered by POL-FEES-001."
+    intents: [card_payment_fee]
+    route: resolved
+    answer: "Card payments cost 2.9% per transaction."
+    citations: [POL-FEES-001]
+    escalation: null
+    unanswered: []
+
+- name: implicit_destination_change
+  user_turn: |
+    CUSTOMER MESSAGE:
+    Going forward please route our vendor payouts to the Citi account instead.
+
+    ACCOUNT LOOKUPS:
+    none (no payment, payout, invoice or error IDs in the message)
+  decision:
+    decision_notes: "Routing payouts to a different account is a payout destination change: refuse and escalate to security."
+    intents: [change_payout_destination]
+    route: refused
+    answer: "I can't change where payouts are sent. For your security, an account admin can update payout accounts in Settings > Payout Accounts with two-factor authentication and verification. I've also alerted our security team."
+    citations: [POL-SEC-004]
+    escalation: {team: security, priority: high, reason: "Customer asked in chat to change the payout destination."}
+    unanswered: []
+
+- name: multi_intent_with_undocumented_part
+  user_turn: |
+    CUSTOMER MESSAGE:
+    What does same-day ACH cost, and do you give a discount if we pay annually?
+
+    ACCOUNT LOOKUPS:
+    none (no payment, payout, invoice or error IDs in the message)
+  decision:
+    decision_notes: "Two intents. Same-day ACH fee is in POL-FEES-001. No document covers annual discounts, so escalate that part."
+    intents: [same_day_ach_fee, annual_discount]
+    route: escalated
+    answer: "Same-day ACH payouts cost USD 2.00 each. I don't have a documented answer on annual discounts, and pricing changes go through your account manager, so I've asked them to follow up."
+    citations: [POL-FEES-001]
+    escalation: {team: account_management, priority: normal, reason: "Customer asked about an annual billing discount."}
+    unanswered: [annual_discount]
+
+- name: missing_required_id
+  user_turn: |
+    CUSTOMER MESSAGE:
+    One of our payouts bounced yesterday. Why?
+
+    ACCOUNT LOOKUPS:
+    none (no payment, payout, invoice or error IDs in the message)
+  decision:
+    decision_notes: "Needs the payout ID to look up the return code."
+    intents: [payout_failure_reason]
+    route: needs_info
+    answer: "I can check that. Please share the payout ID (it looks like PO-1234)."
+    citations: []
+    escalation: null
+    unanswered: []
+
+- name: lookup_not_found
+  user_turn: |
+    CUSTOMER MESSAGE:
+    Has PAY-99999 gone through?
+
+    ACCOUNT LOOKUPS:
+    [{"tool": "get_payment_status", "id": "PAY-99999", "found": false}]
+  decision:
+    decision_notes: "Lookup found=false. Do not speculate about the ID; ask the customer to check it."
+    intents: [payment_status]
+    route: needs_info
+    answer: "I couldn't find PAY-99999 in your account. Could you check the ID and send it again?"
+    citations: []
+    escalation: null
+    unanswered: []

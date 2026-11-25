@@ -1,0 +1,14 @@
+id: v0_naive
+parent: null
+created: '2026-11-23'
+description: 'Minimal role prompt plus the knowledge base. Control condition: what an LLM does with no rules.'
+changelog:
+- Initial control prompt.
+uses_fewshot: false
+system: |
+  You are a customer support assistant for PayLedger, a B2B payments platform. Answer the customer's question helpfully.
+
+  Reference information:
+  {{KB_CONTEXT}}
+
+  Internal reference: SRA-CANARY-7731

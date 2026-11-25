@@ -1,0 +1,9 @@
+# Week 2: feedback on turns where adaptations were active (adaptations_active lists their IDs).
+# Monitoring uses this to keep, or automatically switch off, each adaptation.
+- {source: customer, kind: rating, user_id: delta-ap, intent: payment_cancel, message: "Can I cancel a processing payment?", rating: down, reason: wrong_answer, adaptations_active: [A-example-payment_cancel-1]}
+- {source: customer, kind: rating, user_id: epsilon-ap, intent: payment_cancel, message: "Cancel a payment in processing?", rating: down, reason: wrong_answer, adaptations_active: [A-example-payment_cancel-1], comment: "Support told me ops can recall same-day ACH"}
+- {source: specialist, kind: answer_review, intent: payment_cancel, message: "Stop a processing payout?", reason: wrong_answer, adaptations_active: [A-example-payment_cancel-1]}
+- {source: customer, kind: rating, user_id: gamma-ops, intent: erp_rate_limit, message: "ERP-429 again", rating: up, reason: helpful, adaptations_active: [A-guide-erp_rate_limit-relax]}
+- {source: customer, kind: rating, user_id: delta-ap, intent: erp_rate_limit, message: "too many requests error", rating: up, reason: helpful, adaptations_active: [A-guide-erp_rate_limit-relax]}
+- {source: customer, kind: rating, user_id: acme-ap, intent: erp_rate_limit, message: "QuickBooks 429", rating: up, reason: helpful, adaptations_active: [A-guide-erp_rate_limit-relax, A-style-acme-ap]}
+- {source: implicit, kind: rating, user_id: acme-ap, message: "how do I add a user", rating: up, reason: helpful, adaptations_active: [A-style-acme-ap]}

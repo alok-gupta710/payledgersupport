@@ -1,0 +1,24 @@
+{
+  "embedding": "text-embedding-3-small",
+  "chunking": "fixed_700",
+  "top_k": 4,
+  "threshold": 0.3323,
+  "calibration": {
+    "min_answerable_kept": 0.95,
+    "answerable_kept": 0.97,
+    "unanswerable_blocked": 0.308,
+    "answerable_n": 33,
+    "unanswerable_n": 13,
+    "answerable_score_range": [
+      0.252,
+      0.796
+    ],
+    "unanswerable_score_range": [
+      0.213,
+      0.539
+    ]
+  },
+  "corpus_fingerprint": "4e189e48",
+  "vector_backend": "pinecone",
+  "dry_run": false
+}

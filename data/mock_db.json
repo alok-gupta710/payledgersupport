@@ -1,0 +1,27 @@
+{
+  "_note": "Synthetic data only. No real customers, vendors or bank details.",
+  "payments": {
+    "PAY-10482": {"tenant_id": "T-001", "status": "processing", "method": "ACH", "amount": 12450.00, "currency": "USD", "created": "2026-11-16", "completed": null, "return_code": null},
+    "PAY-10490": {"tenant_id": "T-001", "status": "completed", "method": "ACH", "amount": 3200.00, "currency": "USD", "created": "2026-11-17", "completed": "2026-11-19", "return_code": null},
+    "PAY-10501": {"tenant_id": "T-001", "status": "failed", "method": "ACH", "amount": 875.50, "currency": "USD", "created": "2026-11-20", "completed": null, "return_code": "R03"},
+    "PAY-10512": {"tenant_id": "T-001", "status": "processing", "method": "SWIFT", "amount": 9100.00, "currency": "EUR", "created": "2026-11-19", "completed": null, "return_code": null},
+    "PAY-20001": {"tenant_id": "T-002", "status": "completed", "method": "ACH", "amount": 50000.00, "currency": "USD", "created": "2026-11-10", "completed": "2026-11-12", "return_code": null}
+  },
+  "payouts": {
+    "PO-7781": {"tenant_id": "T-001", "status": "paid", "amount": 15000.00, "currency": "USD", "created": "2026-11-18", "completed": "2026-11-19"},
+    "PO-7790": {"tenant_id": "T-001", "status": "failed", "amount": 4300.00, "currency": "USD", "created": "2026-11-21", "completed": null, "return_code": "R01"}
+  },
+  "invoices": {
+    "INV-2231": {"tenant_id": "T-001", "amount": 1180.00, "currency": "USD", "charges": [
+      {"charge_id": "CH-9001", "amount": 1180.00, "date": "2026-11-20"},
+      {"charge_id": "CH-9002", "amount": 1180.00, "date": "2026-11-20"}
+    ]},
+    "INV-2240": {"tenant_id": "T-001", "amount": 640.00, "currency": "USD", "charges": [
+      {"charge_id": "CH-9010", "amount": 640.00, "date": "2026-11-21"}
+    ]}
+  },
+  "error_codes": {
+    "ERP-409": "KB-ERP-409",
+    "ERP-401": "KB-ERP-401"
+  }
+}

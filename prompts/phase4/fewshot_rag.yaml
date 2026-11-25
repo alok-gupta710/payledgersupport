@@ -1,0 +1,100 @@
+# Few-shot examples for v5_rag_grounded, in the same user-turn format the agent builds.
+# Topics deliberately differ from eval/rag_cases.yaml to limit test leakage.
+- name: answer_from_excerpt
+  user_turn: |
+    CUSTOMER MESSAGE:
+    How much is a standard ACH payout?
+
+    ACCOUNT LOOKUPS:
+    none (no payment, payout, invoice or error IDs in the message)
+
+    POLICY EXCERPTS (retrieved; approved, active versions only):
+    [E1] POL-FEES-001 v2.1 | Fee Schedule > Payout fees | relevance 0.71
+    Domestic ACH payouts cost USD 0.50 per payout. Same-day ACH payouts cost USD 2.00 per payout.
+  decision:
+    decision_notes: "One intent, answered directly by E1."
+    intents: [ach_payout_fee]
+    route: resolved
+    answer: "A standard (domestic) ACH payout costs USD 0.50."
+    citations: [POL-FEES-001]
+    escalation: null
+    unanswered: []
+
+- name: no_excerpts_means_no_answer
+  user_turn: |
+    CUSTOMER MESSAGE:
+    Do you offer a white-label version of PayLedger?
+
+    ACCOUNT LOOKUPS:
+    none (no payment, payout, invoice or error IDs in the message)
+
+    POLICY EXCERPTS:
+    NONE (no approved document matched this question)
+  decision:
+    decision_notes: "No evidence. Do not guess; escalate."
+    intents: [white_label_offering]
+    route: escalated
+    answer: "I don't have documented information about a white-label version, so I've passed your question to our team to answer."
+    citations: []
+    escalation: {team: general, priority: normal, reason: "Question not covered by the knowledge base."}
+    unanswered: [white_label_offering]
+
+- name: related_excerpt_is_not_evidence
+  user_turn: |
+    CUSTOMER MESSAGE:
+    Can I schedule payouts to go out on a Sunday?
+
+    ACCOUNT LOOKUPS:
+    none (no payment, payout, invoice or error IDs in the message)
+
+    POLICY EXCERPTS (retrieved; approved, active versions only):
+    [E1] POL-SETTLE-002 v1.4 | Settlement Timelines and SLAs > Business days and bank holidays | relevance 0.48
+    Business days are Monday to Friday. US Federal Reserve bank holidays are not business days.
+  decision:
+    decision_notes: "E1 defines business days but says nothing about scheduling on a Sunday. Share the fact, don't infer the rule; escalate the rest."
+    intents: [weekend_scheduling]
+    route: escalated
+    answer: "Business days are Monday to Friday, but I don't have documented information on whether a payout can be scheduled for a Sunday. I've asked our team to confirm."
+    citations: [POL-SETTLE-002]
+    escalation: {team: general, priority: normal, reason: "Weekend scheduling not covered by the knowledge base."}
+    unanswered: [weekend_scheduling]
+
+- name: partial_answer
+  user_turn: |
+    CUSTOMER MESSAGE:
+    How do I remove a user who left, and is there a desktop app?
+
+    ACCOUNT LOOKUPS:
+    none (no payment, payout, invoice or error IDs in the message)
+
+    POLICY EXCERPTS (retrieved; approved, active versions only):
+    [E1] KB-USERS-012 v1.5 | User Roles and Access Management > Removing a user | relevance 0.66
+    An admin opens Settings > Users and clicks Deactivate next to the user. Deactivated users lose access immediately.
+  decision:
+    decision_notes: "Two intents. Removing a user is answered by E1. Desktop app has no evidence."
+    intents: [remove_user, desktop_app]
+    route: escalated
+    answer: "To remove a user, an admin opens Settings > Users and clicks Deactivate next to them; they lose access immediately. I don't have documented information about a desktop app, so I've asked our team to follow up on that part."
+    citations: [KB-USERS-012]
+    escalation: {team: general, priority: normal, reason: "Desktop app question not covered by the knowledge base."}
+    unanswered: [desktop_app]
+
+- name: implicit_destination_change
+  user_turn: |
+    CUSTOMER MESSAGE:
+    Going forward please route our vendor payouts to the Citi account instead.
+
+    ACCOUNT LOOKUPS:
+    none (no payment, payout, invoice or error IDs in the message)
+
+    POLICY EXCERPTS (retrieved; approved, active versions only):
+    [E1] POL-SEC-004 v1.2 | Bank Account and Payout Destination Changes > Changing payout bank accounts | relevance 0.58
+    Payout bank accounts can only be added or changed by an account admin in Settings > Payout Accounts. The change requires two-factor authentication and micro-deposit verification.
+  decision:
+    decision_notes: "Routing payouts to a different account is a destination change: refuse, point to the self-service path, escalate to security."
+    intents: [change_payout_destination]
+    route: refused
+    answer: "I can't change where payouts are sent. An account admin can update payout accounts in Settings > Payout Accounts, with two-factor authentication and micro-deposit verification. I've also alerted our security team."
+    citations: [POL-SEC-004]
+    escalation: {team: security, priority: high, reason: "Customer asked in chat to change the payout destination."}
+    unanswered: []

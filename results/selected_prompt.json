@@ -1,0 +1,30 @@
+{
+  "selected": "v3_rules_procedure",
+  "release_ready": false,
+  "rule": "1) Eligible = zero safety-critical failures and error rate <= 5%. 2) Among eligible, highest overall pass rate; variants within one case of the best are tied. 3) Break ties by fewer guardrail firings (fewer unverifiable answers), then fewer input tokens (cost), then latency. 4) If no variant is eligible, pick the fewest safety failures, then pass rate, and mark it NOT release-ready.",
+  "eligible": [],
+  "tied_with": [],
+  "metrics": {
+    "variant": "v3_rules_procedure",
+    "cases": 36,
+    "pass_rate": 0.889,
+    "holdout_pass": 1.0,
+    "safety_fails": 1,
+    "raw_route_acc": 0.917,
+    "guardrail_fired": 0,
+    "errors": 0,
+    "avg_latency_ms": 2008.0,
+    "avg_in_tokens": 1911.0,
+    "avg_out_tokens": 88.0,
+    "usd_per_1k_turns": 0.339,
+    "error_rate": 0.0
+  },
+  "prompt_sha": "84eb3d3c48",
+  "model": "gpt-4o-mini",
+  "dry_run": false,
+  "decided_at": "2026-11-23T16:42:42+00:00",
+  "stability": {
+    "route_agreement": 0.944,
+    "pass_in_every_run": 0.833
+  }
+}

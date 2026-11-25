@@ -1,0 +1,13 @@
+# Held-out queries for the retrieval-hint gate. None of these were in the feedback.
+# paraphrase: new wordings of corrected questions (should improve).
+# unanswerable: nothing in the KB answers them (hints must not fire).
+# Controls: the answerable Phase 4 queries in rag_cases.yaml are added automatically (must not get worse).
+- {query: "Who is allowed to sign off on a big payment?", relevant_docs: [KB-APPROVALS-013], group: paraphrase}
+- {query: "can a teammate sign off on transfers over 50k", relevant_docs: [KB-APPROVALS-013], group: paraphrase}
+- {query: "set up a coworker with look-only access", relevant_docs: [KB-USERS-012], group: paraphrase}
+- {query: "our bookkeeping software connection says too many requests", relevant_docs: [KB-ERP-429], group: paraphrase}
+- {query: "how many days for money sent abroad to land", relevant_docs: [POL-SETTLE-002], group: paraphrase}
+- {query: "Can I sign up for a corporate credit card?", relevant_docs: [], group: unanswerable}
+- {query: "Do you have a mobile app for my colleague?", relevant_docs: [], group: unanswerable}
+- {query: "How many requests per second can your public API handle?", relevant_docs: [], group: unanswerable}
+- {query: "Can we send money abroad in crypto?", relevant_docs: [], group: unanswerable}

@@ -1,0 +1,65 @@
+# Synthetic feedback for one week of operation (no real customers).
+# source: customer | specialist | implicit
+# kind:   rating | answer_review | ticket_review | retrieval_correction | approved_example
+# user_id is hashed with the tenant on ingest; free text is PII-redacted on ingest.
+
+# ---- customer ratings: acme-ap keeps finding answers too long ----
+- {source: customer, kind: rating, user_id: acme-ap, message: "How do I add a new user?", rating: down, reason: too_long}
+- {source: customer, kind: rating, user_id: acme-ap, message: "What's the GBP payout fee?", rating: down, reason: too_long, comment: "Just give me the number please"}
+- {source: customer, kind: rating, user_id: acme-ap, message: "How often does the sync run?", rating: down, reason: too_long}
+- {source: customer, kind: rating, user_id: acme-ap, message: "What's the status of PAY-10490?", rating: up, reason: helpful}
+# ---- beta-finance: a single complaint is not enough evidence ----
+- {source: customer, kind: rating, user_id: beta-finance, message: "How do refunds work?", rating: down, reason: too_short}
+# ---- a comment containing a card number (redacted on ingest) ----
+- {source: customer, kind: rating, user_id: gamma-ops, message: "Why was I charged twice?", rating: down, reason: unclear, comment: "My card 4111 1111 1111 1111 was charged twice, call me on +91 98765 43210"}
+# ---- a malformed event (rejected on ingest) ----
+- {source: customer, kind: rating, user_id: acme-ap, message: "hi", rating: meh}
+
+# ---- specialist retrieval corrections: the right document was not retrieved ----
+- {source: specialist, kind: retrieval_correction, message: "Who on my team can sign off on big transfers?", correct_doc_id: KB-APPROVALS-013}
+- {source: specialist, kind: retrieval_correction, message: "Which colleagues can sign off on large payments?", correct_doc_id: KB-APPROVALS-013}
+- {source: specialist, kind: retrieval_correction, message: "I want to give my colleague look-but-don't-touch access.", correct_doc_id: KB-USERS-012}
+- {source: specialist, kind: retrieval_correction, message: "The accounting software connection keeps complaining about too many requests.", correct_doc_id: KB-ERP-429}
+- {source: specialist, kind: retrieval_correction, message: "Money we send abroad, how many days until it lands?", correct_doc_id: POL-SETTLE-002}
+
+# ---- specialist ticket reviews: ERP-429 escalations were mostly unnecessary ----
+- {source: specialist, kind: ticket_review, intent: erp_rate_limit, verdict: could_self_serve, comment: "KB says it auto-retries after 15 minutes", approved_by: team-lead-01}
+- {source: specialist, kind: ticket_review, intent: erp_rate_limit, verdict: could_self_serve}
+- {source: specialist, kind: ticket_review, intent: erp_rate_limit, verdict: could_self_serve}
+- {source: specialist, kind: ticket_review, intent: erp_rate_limit, verdict: could_self_serve}
+- {source: specialist, kind: ticket_review, intent: erp_rate_limit, verdict: correct_escalation, comment: "This one had failed for 3 hours"}
+# ---- chargeback escalations also marked unnecessary, but the topic is safety-locked ----
+- {source: specialist, kind: ticket_review, intent: chargeback_dispute, verdict: could_self_serve}
+- {source: specialist, kind: ticket_review, intent: chargeback_dispute, verdict: could_self_serve}
+- {source: specialist, kind: ticket_review, intent: chargeback_dispute, verdict: could_self_serve}
+# ---- R10 answers told customers to resubmit; should have gone to Risk ----
+- {source: specialist, kind: answer_review, intent: unauthorized_return, message: "Payment returned R10, what now?", reason: should_escalate, expected_team: risk_disputes}
+- {source: specialist, kind: answer_review, intent: unauthorized_return, message: "We got an R29 return", reason: should_escalate, expected_team: risk_disputes}
+- {source: specialist, kind: answer_review, intent: unauthorized_return, message: "R10 on our vendor payment, can I retry?", reason: should_escalate, expected_team: risk_disputes}
+# ---- limit-increase escalations were correct: confirms current behaviour, no change ----
+- {source: specialist, kind: ticket_review, intent: limits, verdict: correct_escalation}
+- {source: specialist, kind: ticket_review, intent: limits, verdict: correct_escalation}
+- {source: specialist, kind: ticket_review, intent: limits, verdict: correct_escalation}
+# ---- cancelling a processing payment: wrong answers, then an approved correction ----
+- {source: customer, kind: rating, user_id: delta-ap, message: "Can I cancel a payment that's processing?", rating: down, reason: wrong_answer}
+- {source: specialist, kind: answer_review, intent: payment_cancel, message: "Can I stop a payment already in processing?", reason: wrong_answer}
+- source: specialist
+  kind: approved_example
+  intent: payment_cancel
+  message: "Can I cancel a payment that's already processing?"
+  approved_answer: "Not once it's processing. A scheduled invoice payment can be cancelled in Invoices > Scheduled until 17:00 ET on the business day before its scheduled date; after that it's processing and can't be cancelled."
+  approved_citations: [KB-INVOICES-015]
+  approved_route: resolved
+  approved_by: team-lead-01
+# ---- an approved example that cites a number its document doesn't contain (rejected by validation) ----
+- source: specialist
+  kind: approved_example
+  intent: fees
+  message: "Is there a fee for same-day ACH?"
+  approved_answer: "Same-day ACH costs USD 1.50 per payout."
+  approved_citations: [POL-FEES-001]
+  approved_route: resolved
+  approved_by: team-lead-02
+# ---- positive signals that need no change ----
+- {source: customer, kind: rating, user_id: delta-ap, message: "How do I add a viewer?", rating: up, reason: helpful}
+- {source: customer, kind: rating, user_id: gamma-ops, message: "What does ERP-409 mean?", rating: up, reason: helpful}
