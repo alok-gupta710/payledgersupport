@@ -13,10 +13,10 @@ COPY app.py .
 COPY service.py .
 COPY config.py .
 COPY observability.py .
-COPY resilience.py
+COPY resilience.py .
 COPY llm_agent.py .
 COPY rag_agent.py .
-COPY tool_agent.py
+COPY tool_agent.py .
 COPY memory_agent.py .
 COPY adaptive_agent.py .
 COPY baseline_agent.py .
@@ -25,6 +25,7 @@ COPY scenarios.py .
 COPY evaluation.py .
 COPY run_eval.py .
 COPY safety_review.py .
+
 
 # WHY EXPOSE 8501: tells Cloud Run which port to route traffic to
 EXPOSE 8501
