@@ -12,11 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY app.py .
 
 # WHY EXPOSE 8080: tells Cloud Run which port to route traffic to
-EXPOSE 8080
-
-# WHY ENV PORT=8080: Cloud Run injects PORT as an environment variable.
-# Our app reads os.environ.get('PORT') — never hardcode the port.
-ENV PORT=8080
+EXPOSE 8000
 
 # WHY CMD not ENTRYPOINT: Cloud Run can override CMD at runtime if needed
 CMD ["python", "app.py"]
